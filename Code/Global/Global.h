@@ -1,3 +1,5 @@
+#ifndef GLOBAL_H
+#define GLOBAL_H
 #pragma once
 
 #ifdef _WIN32
@@ -94,4 +96,6 @@ enum CM_LOGGERENTRY : unsigned char
 
 #include "Exit.h"
 #include "Logger.h"
+
+#endif // GLOBAL_H
 
