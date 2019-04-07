@@ -58,10 +58,10 @@ enum CM_LOGGERENTRY : unsigned char
 #ifdef USE_DEBUG_MESSAGES
 
 #define X_NEWLINESTR " \n"
-#define SOURCEPATH_LENGTH                         strlen(SOURCEPATH) + 1
+#include <cstring>
+#define SOURCEPATH_LENGTH                         std::strlen(SOURCEPATH) + 1
 #define SOURCE_FILENAME                          &__FILE__[SOURCEPATH_LENGTH]
 
-#include <string>
 #define FILE_NAME(name) (std::string(name).find(SOURCEPATH) != std::string::npos) ? SOURCE_FILENAME : __FILE__
 
 #ifdef WINDEBUG

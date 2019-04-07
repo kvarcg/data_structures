@@ -48,6 +48,8 @@ cd build
 cmake -G "Visual Studio 15 2017 Win64" ..
 # MinGW 7.3
 cmake -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" -DCMAKE_BUILD_TYPE=Release ..
+# GCC 7.3
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
 make -j<number of jobs>
 ```
 # Running the Tests

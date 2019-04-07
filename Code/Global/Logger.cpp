@@ -49,7 +49,7 @@ namespace BASELIB
         {
             std::stringstream m_time_sstr;
 
-#ifdef WIN32
+#ifdef _WIN32
             struct tm newtime;
             __time64_t long_time;
             // Get time as 64-bit integer.
@@ -229,7 +229,7 @@ namespace BASELIB
         return (m_file_filter_mask & type) > 0;
     }
 
-    bool MessageConsole(unsigned char type, const char * fmt, ...)
+    bool MessageConsole(unsigned char type, const char* fmt, ...)
     {
         m_logger.Lock();
 
@@ -279,24 +279,19 @@ namespace BASELIB
             idstring = curidstring;
         }
 
+        char* text;                                    // Holds Our String
+        va_list args;                                // Pointer To List Of Arguments
+
+        va_start(args, fmt);                        // Parses The String For Variables
+        int len = _vscprintf(fmt, args) + 1;        // _vscprintf doesn't count
+        if(len == 0) {
+            return false;
+        }
+        text = my_new char[len];
 #ifdef _WIN32
-        char* text;                                    // Holds Our String
-        va_list args;                                // Pointer To List Of Arguments
-
-        va_start(args, fmt);                        // Parses The String For Variables
-        int len = _vscprintf(fmt, args) + 1;        // _vscprintf doesn't count
-        text = my_new char[len];
-        vsprintf_s(text, len, fmt, args);            // And Converts Symbols To Actual Numbers
-        va_end(args);                                // Results Are Stored In Text
+        vsnprintf(text, len, fmt, args);            // And Converts Symbols To Actual Numbers
 #else
-        char* text;                                    // Holds Our String
-        va_list args;                                // Pointer To List Of Arguments
-
-        va_start(args, fmt);                        // Parses The String For Variables
-        int len = _vscprintf(fmt, args) + 1;        // _vscprintf doesn't count
-        text = my_new char[len];
-        vsprintf_s(text, len, fmt, args);            // And Converts Symbols To Actual Numbers
-        va_end(args);                                // Results Are Stored In Text
+        vsnprintf(text, len, fmt, args);            // And Converts Symbols To Actual Numbers
 #endif
 
         m_logger.PrintMessage(text, valid_file, valid_console);
