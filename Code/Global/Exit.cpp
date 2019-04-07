@@ -20,11 +20,11 @@ namespace BASELIB
     {
 #if defined(WINDEBUG)
         int tmpDbgFlag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
-        tmpDbgFlag |= _CRTDBG_ALLOC_MEM_DF;            // Turn on debug allocation
+        tmpDbgFlag |= _CRTDBG_ALLOC_MEM_DF;             // Turn on debug allocation
         //tmpDbgFlag |= _CRTDBG_CHECK_ALWAYS_DF;        // Check heap every alloc / dealloc
-        //tmpDbgFlag |= _CRTDBG_CHECK_CRT_DF;            // Leak check/diff CRT blocks
-        tmpDbgFlag |= _CRTDBG_DELAY_FREE_MEM_DF;    // Don't actually free memory
-        tmpDbgFlag |= _CRTDBG_LEAK_CHECK_DF;         // Leak check at program exit
+        //tmpDbgFlag |= _CRTDBG_CHECK_CRT_DF;           // Leak check/diff CRT blocks
+        tmpDbgFlag |= _CRTDBG_DELAY_FREE_MEM_DF;        // Don't actually free memory
+        tmpDbgFlag |= _CRTDBG_LEAK_CHECK_DF;            // Leak check at program exit
         _CrtSetDbgFlag(tmpDbgFlag);
 #endif // WIN32 && _DEBUG
     }

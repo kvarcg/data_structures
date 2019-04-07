@@ -3,9 +3,11 @@
 
 // includes ////////////////////////////////////////
 #include "Logger.h"
+#include <iomanip>
 #if defined(_WIN32)
 #include <strsafe.h>
 #else
+#include <stdio.h>
 #include <stdarg.h>
 int _vscprintf(const char * format, va_list pargs) {
     int retval;
@@ -24,6 +26,7 @@ int _vscprintf(const char * format, va_list pargs) {
 #include <mutex>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 // defines /////////////////////////////////////////
 static BASELIB::Logger m_logger;
 
@@ -48,43 +51,14 @@ namespace BASELIB
         void GetLogCurrentTime() override
         {
             std::stringstream m_time_sstr;
-
-#ifdef _WIN32
-            struct tm newtime;
-            __time64_t long_time;
-            // Get time as 64-bit integer.
-            _time64(&long_time);
-            // Convert to local time.
-            int err = _localtime64_s(&newtime, &long_time);
-            if (err) return;
-            if (newtime.tm_mday < 10) m_time_sstr << "0";
-            m_time_sstr << newtime.tm_mday << "/";
-            if (newtime.tm_mon < 10) m_time_sstr << "0";
-            m_time_sstr << newtime.tm_mon << "/";
-            m_time_sstr << newtime.tm_year + 1900 << " ";
-            if (newtime.tm_hour < 10) m_time_sstr << "0";
-            m_time_sstr << newtime.tm_hour << ":";
-            if (newtime.tm_min < 10) m_time_sstr << "0";
-            m_time_sstr << newtime.tm_min << ":";
-            if (newtime.tm_sec < 10) m_time_sstr << "0";
-            m_time_sstr << newtime.tm_sec << " ";
-#else
-            time_t rawtime;
-            time(&rawtime);
-            struct tm* newtime = localtime(&rawtime);
-            if (newtime->tm_mday < 10) m_time_sstr << "0";
-            m_time_sstr << newtime->tm_mday << "/";
-            if (newtime->tm_mon < 10) m_time_sstr << "0";
-            m_time_sstr << newtime->tm_mon << "/";
-            m_time_sstr << newtime->tm_year + 1900 << " ";
-            if (newtime->tm_hour < 10) m_time_sstr << "0";
-            m_time_sstr << newtime->tm_hour << ":";
-            if (newtime->tm_min < 10) m_time_sstr << "0";
-            m_time_sstr << newtime->tm_min << ":";
-            if (newtime->tm_sec < 10) m_time_sstr << "0";
-            m_time_sstr << newtime->tm_sec << " ";
-#endif
-
+            std::time_t now = std::time(nullptr);
+            std::tm tm = *std::localtime(&now);
+            m_time_sstr << std::setfill('0') << std::setw(2) << tm.tm_mday << "/";
+            m_time_sstr << std::setfill('0') << std::setw(2) << tm.tm_mon << "/";
+            m_time_sstr << tm.tm_year + 1900 << " ";
+            m_time_sstr << std::setfill('0') << std::setw(2) << tm.tm_hour << ":";
+            m_time_sstr << std::setfill('0') << std::setw(2) << tm.tm_min << ":";
+            m_time_sstr << std::setfill('0') << std::setw(2) << tm.tm_sec << " ";
             m_time_str = m_time_sstr.str().c_str();
         }
 
@@ -279,19 +253,17 @@ namespace BASELIB
             idstring = curidstring;
         }
 
-        char* text;                                    // Holds Our String
-        va_list args;                                // Pointer To List Of Arguments
+        char* text;
+        va_list args;
 
-        va_start(args, fmt);                        // Parses The String For Variables
-        int len = _vscprintf(fmt, args) + 1;        // _vscprintf doesn't count
-        if(len == 0) {
-            return false;
-        }
+        va_start(args, fmt);
+        int len = _vscprintf(fmt, args) + 1;
+        if (len <= 0) { va_end(args); return false; }
         text = my_new char[len];
 #ifdef _WIN32
-        vsnprintf(text, len, fmt, args);            // And Converts Symbols To Actual Numbers
+        vsnprintf(text, len, fmt, args);
 #else
-        vsnprintf(text, len, fmt, args);            // And Converts Symbols To Actual Numbers
+        vsnprintf(text, len, fmt, args);
 #endif
 
         m_logger.PrintMessage(text, valid_file, valid_console);
