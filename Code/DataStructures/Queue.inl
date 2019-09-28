@@ -31,12 +31,12 @@ namespace DS {
         // traverse the old list from the front
         node_type* node = oldcontainer.m_front;
         while (node != nullptr) {
-            node = node->m_prev;
+            node = node->m_next;
 
             // if there is a next pointer, clone it to the copy list and advance
             if (node != nullptr) {
-                copy_node->m_prev = my_new node_type(*node);
-                copy_node = copy_node->m_prev;
+                copy_node->m_next = my_new node_type(*node);
+                copy_node = copy_node->m_next;
             }
 
             // store the back as well
@@ -55,7 +55,7 @@ namespace DS {
             // store current node as temp (to delete)
             node_type* tmp_node = node;
             // advance
-            node = node->m_prev;
+            node = node->m_next;
             // delete the stored node
             XE_SAFE_DELETE(tmp_node);
         }
@@ -77,7 +77,7 @@ namespace DS {
         }
 
         // set the old back to contain the new node
-        m_back->m_prev = node;
+        m_back->m_next = node;
 
         // set the new node as back
         m_back = node;
@@ -93,8 +93,8 @@ namespace DS {
         // store the node to pop from the front
         node_type* node = m_front;
 
-        // update the new front with the prev
-        m_front = m_front->m_prev;
+        // update the new front with the next
+        m_front = m_front->m_next;
 
         // if the list becomes empty, update the back pointer as well
         if (m_front == nullptr) {
@@ -114,7 +114,7 @@ namespace DS {
         while (node != nullptr) {
             str = str.append(std::to_string(node->m_data.val));
             str = str.append("->");
-            node = node->m_prev;
+            node = node->m_next;
         }
         str = str.append("[]");
         X_DEBUG_COMMENT("Queue (Front to Back): %s", str.c_str());

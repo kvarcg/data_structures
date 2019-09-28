@@ -169,7 +169,7 @@ namespace DS {
         /// @param str a string to store the result
         void printNodeInorder(node_type* node, std::string& str) const;
 
-        /// @brief Print levelorder traversal of the tree (left, root, right), e.g. for DFS operations
+        /// @brief Print levelorder traversal of the tree (left, root, right), e.g. for BFS operations
         /// @param start_level the start level node
         /// @param requested_level the requested level to find
         /// @param str a string to store the result

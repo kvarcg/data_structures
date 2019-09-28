@@ -31,8 +31,8 @@ namespace DS {
         protected:
             /// @brief Data type
             T m_data = { nullptr };
-            /// @brief Prev pointer
-            NodeSingle *m_prev = { nullptr };
+            /// @brief Next pointer
+            NodeSingle *m_next = { nullptr };
             /// @brief Explicit Constructor
             explicit NodeSingle(const T& _data) :m_data(_data) { }
             friend class Queue<T>;
