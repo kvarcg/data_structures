@@ -94,7 +94,7 @@ namespace DS {
     /// Space Complexity: O(logN), worst case is 0(N)
     /// Time Complexity:
     /// Best: O(NlogN) and O(1) swaps (sorted list)
-    /// Average: O(NlogN) and swaps
+    /// Average: O(NlogN)
     /// Worse: O(N^2) (for sorted input)
     /// 1. Choose a pivot element in the range [start, end]
     /// 2. Sort the elements against the pivot
@@ -102,7 +102,20 @@ namespace DS {
     ///    loop (steps 1,2) on sublists in the range [start, pivot], [pivot+1, end] until the list is sorted
     /// @param vector the vector to sort
     template <typename T>
-    void quickSort(std::vector<T>& vector);
+	void quickSort(std::vector<T>& vector);
+
+	/// @brief Heap sort
+	/// Offline algorithm (it needs the entire list)
+	/// Space Complexity: O(N), in-place
+	/// Time Complexity:
+	/// Best: O(N+NlogN) (distinct keys) or O(N) (equal keys)
+	/// Average: O(N+NlogN)
+	/// Worse: O(N+NlogN)
+	/// 1. Build a min heap of the elements
+	/// 2. Pop all elements from the heap and add them to the array
+	/// @param vector the vector to sort
+	template <typename T>
+	void quickSort(std::vector<T>& vector);
 
 }  // namespace DS
 

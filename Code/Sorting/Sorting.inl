@@ -337,6 +337,41 @@ namespace DS {
 #endif // DS_DEBUG_LOG
     }
 
+#include "PriorityQueue.h"
+	template<typename T>
+	void heapSort(std::vector<T>& vector)
+	{
+#ifdef DS_DEBUG_LOG
+		iteration = 0;
+#endif // DS_DEBUG_LOG
+
+		DS::PriorityQueue<T, true> heap;
+		heap.reserve(vector.size());
+		for (auto& el : vector) {
+			heap.push(el);
+#ifdef DS_DEBUG_LOG
+			++iteration;
+#endif // DS_DEBUG_LOG
+		}
+		
+		size_t index = 0;
+		while (!heap.empty()) {
+			vector[index++] = *heap.top();
+			heap.pop();
+#ifdef DS_DEBUG_LOG
+			++iteration;
+#endif // DS_DEBUG_LOG
+		}
+
+#ifdef DS_DEBUG_LOG
+		++iteration;
+#endif // DS_DEBUG_LOG
+
+#ifdef DS_DEBUG_LOG
+		X_DEBUG_COMMENT("Heap sort (%d items) finished after %d iterations", vector.size(), iteration);
+#endif // DS_DEBUG_LOG
+	}
+
 }  // namespace DS
 
 #endif //DSSORTING_INL

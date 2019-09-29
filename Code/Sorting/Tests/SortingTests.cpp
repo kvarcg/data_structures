@@ -129,6 +129,7 @@ namespace DS {
                 testSort(bubbleSort<int>, element_size, "Bubble Sort");
                 testSort(mergeSort<int>, element_size, "Merge Sort");
                 testSort(quickSort<int>, element_size, "Quick Sort");
+                testSort(heapSort<int>, element_size, "Heap Sort");
             }
             X_DEBUG_COMMENT("Finished %s", __func__);
         }
